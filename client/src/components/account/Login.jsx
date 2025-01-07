@@ -49,13 +49,23 @@ const SignupButton = styled(Button)`
     box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
 `;
 
+const signupInitialValues = {
+    name: "",
+    username: "",
+    password: ""
+}
+
 const Login = () => {
     const imageURL = loginImage;
     const [account, toggleAccount] = useState('login');
+    const [signup, setSignup] = useState(signupInitialValues);
     const toggleSignup = () => {
         account === 'signup' ? toggleAccount('login') : toggleAccount('signup');
     }
-
+    const onInputChange = (e) => {
+        setSignup({ ...signup, [e.target.name]: e.target.value });
+    }
+    
     return (
         <Component> 
             <Box>
@@ -71,9 +81,9 @@ const Login = () => {
                 </Wrapper> 
                 :
                 <Wrapper>
-                    <TextField variant='standard' label = 'Name' />
-                    <TextField variant='standard' label = 'Username' /> 
-                    <TextField variant='standard' label = 'Password' /> 
+                    <TextField variant='standard' onChange={(e) => onInputChange(e)} name='name' label = 'Name' />
+                    <TextField variant='standard' onChange={(e) => onInputChange(e)} name='username' label = 'Username' /> 
+                    <TextField variant='standard' onChange={(e) => onInputChange(e)} name='password' label = 'Password' /> 
                     <SignupButton>Sign Up</SignupButton>
                     <Text style={{ textAlign: 'center' }}>OR</Text>
                     <LoginButton variant='contained' onClick={() => toggleSignup()}> Already have an account?</LoginButton>
