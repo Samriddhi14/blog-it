@@ -1,5 +1,6 @@
 
-import { TextField, Box, Button, styled} from '@mui/material';
+import { useState, useContext } from 'react';
+import { TextField, Box, Button, styled, Typography} from '@mui/material';
 import loginImage from '../account/logo.png';
 
 const Component = styled(Box)`
@@ -16,10 +17,15 @@ const Image = styled('img')({ //image treated as variable
     borderRadius: '30% 0% 30% 0%'
   });
 
+  const Text = styled(Typography)`
+    color: #213555;
+    font-size: 14px;
+`;
+
   const Wrapper = styled(Box)`
     padding: 25px 35px;
     display: flex;
-    flex: 1;
+    flex: 1; 
     overflow: auto;
     flex-direction: column;
     & > div, & > button, & > p {
@@ -34,20 +40,41 @@ const Image = styled('img')({ //image treated as variable
     border-radius: 2px;
 `;
 
+const SignupButton = styled(Button)`
+    text-transform: none;
+    background: #fff;
+    color: #213555;
+    height: 48px;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
+`;
+
 const Login = () => {
     const imageURL = loginImage;
 
     return (
         <Component> 
             <Image src = {imageURL} alt = "login" />
-            <Wrapper>
-                <TextField variant='standard' />
-                <TextField variant='standard' /> 
+            {/*<Wrapper>
+                <TextField variant='standard' label = 'Enter Username' />
+                <TextField variant='standard' label = 'Enter Password' /> 
             </Wrapper>
             <Wrapper>
                 <LoginButton variant='contained'>Login</LoginButton>
-                <Button> Create an Account</Button>
+                <Text style={{ textAlign: 'center' }}>OR</Text>
+                <SignupButton> Create an Account</SignupButton>
+            </Wrapper> */}
+            <Wrapper>
+                <TextField variant='standard' label = 'Name' />
+                <TextField variant='standard' label = 'Username' /> 
+                <TextField variant='standard' label = 'Password' /> 
             </Wrapper>
+            <Wrapper>
+                <SignupButton>Sign Up</SignupButton>
+                <Text style={{ textAlign: 'center' }}>OR</Text>
+                <LoginButton variant='contained'> Already have an account?</LoginButton>
+            </Wrapper>
+            
         </Component>
         
     )
