@@ -106,7 +106,7 @@ const CreatePost = () => {
 
             <Textarea
                 rowsMin={5}
-                placeholder="Tell your story..."
+                placeholder="What's on your mind?"
                 name='description'
                 onChange={(e) => handleChange(e)} 
             />
