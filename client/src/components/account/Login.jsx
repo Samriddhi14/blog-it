@@ -1,7 +1,7 @@
 
 import { useState /*useContext*/ } from 'react';
 import { TextField, Box, Button, styled, Typography} from '@mui/material';
-//import { API } from '../../service/api';
+import { API } from '../../service/api';
 import loginImage from '../account/logo.png';
 
 const Component = styled(Box)`
@@ -33,6 +33,13 @@ const Image = styled('img')({ //image treated as variable
         margin-top: 20px;
     }
 `;
+const Error = styled(Typography)`
+    font-size: 10px;
+    color: #ff6161;
+    line-height: 0;
+    margin-top: 10px;
+    font-weight: 600;
+`
   const LoginButton = styled(Button)`
     text-transform: none;
     background: #3E5879 ;
@@ -59,6 +66,7 @@ const signupInitialValues = {
 const Login = () => {
     const imageURL = loginImage;
     const [account, toggleAccount] = useState('login');
+    const [error, setError] = useState('');
     const [signup, setSignup] = useState(signupInitialValues);
     const toggleSignup = () => {
         account === 'signup' ? toggleAccount('login') : toggleAccount('signup');
@@ -68,7 +76,14 @@ const Login = () => {
     }
     
     const signupUser = async () => {
-      //  let response = await API.userSignup(signup);
+        let response = await API.userSignup(signup);
+        if (response.isSuccess) {
+            setError('');
+            setSignup(signupInitialValues);
+            toggleAccount('login');
+        } else {
+            setError('Something went wrong! please try again later');
+        }
     }
     return (
         <Component> 
@@ -79,6 +94,7 @@ const Login = () => {
                 <Wrapper>
                     <TextField variant='standard' label = 'Enter Username' />
                     <TextField variant='standard' label = 'Enter Password' /> 
+                    {error && <Error>{error}</Error>}
                     <LoginButton variant='contained'>Login</LoginButton>
                     <Text style={{ textAlign: 'center' }}>OR</Text>
                     <SignupButton onClick={() => toggleSignup()}> Create an Account</SignupButton>
@@ -88,6 +104,7 @@ const Login = () => {
                     <TextField variant='standard' onChange={(e) => onInputChange(e)} name='name' label = 'Name' />
                     <TextField variant='standard' onChange={(e) => onInputChange(e)} name='username' label = 'Username' /> 
                     <TextField variant='standard' onChange={(e) => onInputChange(e)} name='password' label = 'Password' /> 
+                    {error && <Error>{error}</Error>}
                     <SignupButton onClick={() => signupUser()}>Sign Up</SignupButton>
                     <Text style={{ textAlign: 'center' }}>OR</Text>
                     <LoginButton variant='contained' onClick={() => toggleSignup()}> Already have an account?</LoginButton>

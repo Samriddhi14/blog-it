@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_NOTIFICATION_MESSAGES , SERVICE_URLS} from '../constants/config';
+import { API_NOTIFICATION_MESSAGES, SERVICE_URLS } from '../constants/config';
 
 
 const API_URL = 'http://localhost:8000';
@@ -23,15 +23,12 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
     function(response) {
-        // Stop global loader here
         return processResponse(response);
     },
     function(error) {
-        // Stop global loader here
         return Promise.reject(ProcessError(error));
     }
 );
-
 const processResponse = (response) => {
     if (response?.status === 200) {
         return { isSuccess: true, data: response.data }
@@ -46,8 +43,6 @@ const processResponse = (response) => {
 }
 const ProcessError =  (error) => {
     if (error.response) {
-        // Request made and server responded with a status code 
-        // that falls out of the range of 2xx
         console.log("ERROR IN RESPONSE: ", error.toJSON());
             return {
                 isError: true,
@@ -55,7 +50,6 @@ const ProcessError =  (error) => {
                 code: error.response.status
             }
     } else if (error.request) { 
-        // The request was made but no response was received
         console.log("ERROR IN REQUEST: ", error.toJSON());
             return {
                 isError: true,
@@ -63,7 +57,6 @@ const ProcessError =  (error) => {
                 code: ""
             }
     } else { 
-        // Something happened in setting up the request that triggered an Error
         console.log("ERROR IN NETWORK: ", error.toJSON());
         return {
             isError: true,
@@ -72,7 +65,10 @@ const ProcessError =  (error) => {
         }
     }
 }
+
+
 const API = {};
+
 for (const [key, value] of Object.entries(SERVICE_URLS)) {
     API[key] = (body, showUploadProgress, showDownloadProgress) =>
         axiosInstance({
