@@ -11,7 +11,7 @@ const StyledTable = styled(Table)`
 const StyledButton = styled(Button)`
     margin: 20px;
     width: 85%;
-    background: #6495ED;
+    background: #213555;
     color: #fff;
     text-decoration: none;
 `;

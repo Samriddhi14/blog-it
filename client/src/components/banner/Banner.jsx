@@ -26,7 +26,7 @@ const Banner = () => {
     
     return (
         <Image>
-            <Heading>BLOG-IT</Heading>
+            <Heading>BLOG-!T</Heading>
             <SubHeading>What is on your mind today?</SubHeading>
         </Image>
     )
