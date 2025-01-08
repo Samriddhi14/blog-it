@@ -28,4 +28,4 @@ const UserSchema = mongoose.Schema({
 const Token = mongoose.model('Token', TokenSchema);
 const User = mongoose.model('User', UserSchema);
 
-export { Token, User };
+export default { Token, User };
