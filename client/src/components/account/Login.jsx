@@ -1,7 +1,7 @@
 
 import { useState /*useContext*/ } from 'react';
 import { TextField, Box, Button, styled, Typography} from '@mui/material';
-import { API } from '../../service/api';
+//import { API } from '../../service/api';
 import loginImage from '../account/logo.png';
 
 const Component = styled(Box)`
@@ -68,7 +68,7 @@ const Login = () => {
     }
     
     const signupUser = async () => {
-        let response = await API.userSignup(signup);
+      //  let response = await API.userSignup(signup);
     }
     return (
         <Component> 
