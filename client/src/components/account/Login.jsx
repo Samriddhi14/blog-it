@@ -1,6 +1,7 @@
 
 import { useState /*useContext*/ } from 'react';
 import { TextField, Box, Button, styled, Typography} from '@mui/material';
+import { API } from '../../service/api';
 import loginImage from '../account/logo.png';
 
 const Component = styled(Box)`
@@ -66,6 +67,9 @@ const Login = () => {
         setSignup({ ...signup, [e.target.name]: e.target.value });
     }
     
+    const signupUser = async () => {
+        let response = await API.userSignup(signup);
+    }
     return (
         <Component> 
             <Box>
@@ -84,7 +88,7 @@ const Login = () => {
                     <TextField variant='standard' onChange={(e) => onInputChange(e)} name='name' label = 'Name' />
                     <TextField variant='standard' onChange={(e) => onInputChange(e)} name='username' label = 'Username' /> 
                     <TextField variant='standard' onChange={(e) => onInputChange(e)} name='password' label = 'Password' /> 
-                    <SignupButton>Sign Up</SignupButton>
+                    <SignupButton onClick={() => signupUser()}>Sign Up</SignupButton>
                     <Text style={{ textAlign: 'center' }}>OR</Text>
                     <LoginButton variant='contained' onClick={() => toggleSignup()}> Already have an account?</LoginButton>
                 </Wrapper>
