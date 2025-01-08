@@ -1,5 +1,5 @@
 
-import { useState, useContext  } from 'react';
+import { useState, useContext, useEffect  } from 'react';
 import { TextField, Box, Button, styled, Typography} from '@mui/material';
 import { API } from '../../service/api';
 import loginImage from '../account/logo.png';
@@ -70,7 +70,7 @@ const signupInitialValues = {
     password: ""
 }
 
-const Login = () => {
+const Login = ({isUserAuthenticated}) => {
     const imageURL = loginImage;
     const [account, toggleAccount] = useState('login');
     const [login, setLogin] = useState(loginInitialValues);
@@ -79,6 +79,11 @@ const Login = () => {
 
     const { setAccount } = useContext(DataContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setError(false);
+    }, [login])
+
     
     const toggleSignup = () => {
         account === 'signup' ? toggleAccount('login') : toggleAccount('signup');
@@ -98,9 +103,9 @@ const Login = () => {
             sessionStorage.setItem('accessToken', `Bearer ${response.data.accessToken}`);
             sessionStorage.setItem('refreshToken', `Bearer ${response.data.refreshToken}`);
             setAccount({ name: response.data.name, username: response.data.username }); 
-            //isUserAuthenticated(true)
+            isUserAuthenticated(true)
             setLogin(loginInitialValues);
-            navigate('/')
+            navigate('/');
         } else {
             setError('Something went wrong! please try again later');
             console.log(error);

@@ -1,11 +1,14 @@
 
-
-
-
+import Banner from "../components/banner/Banner";
+import Categories from "./Categories";
 
 const Home = () => {
     return (
-        <div> Hello mi casa</div>
+        <>
+        <Banner />
+        <Categories />
+        </>
+
     )
 }
 
