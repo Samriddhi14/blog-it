@@ -85,7 +85,7 @@ export const Comments = ({post}) => {
             <Box>
             {
                     comments && comments.length > 0 && comments.map(comment => (
-                        <Comment comment={comment}  />
+                        <Comment comment={comment} setToggle={setToggle} />
                     ))
                 } 
             </Box>

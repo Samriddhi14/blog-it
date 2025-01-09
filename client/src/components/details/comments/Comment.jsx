@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { DataContext } from '../../../context/DataProvider';
 import { Delete } from '@mui/icons-material';
+import { API } from '../../../service/api';
 
 import {Box, Typography, styled } from '@mui/material';
 
@@ -30,14 +31,20 @@ const DeleteIcon = styled(Delete)`
 `;
 
 
-export const Comment = ({comment}) => {
+export const Comment = ({comment, setToggle}) => {
     const { account } = useContext(DataContext)
+    const removeComment = async () => {
+        let response = await API.deleteComment(comment._id);
+        if(response.isSuccess){
+            setToggle(prev => !prev);
+        }
+     }
     return(
         <Component>
             <Container>
                 <Name>{comment.name}</Name>
                 <StyledDate>{new Date(comment.date).toDateString()}</StyledDate>
-                { comment.name === account.username && <DeleteIcon /> }
+                { comment.name === account.username && <DeleteIcon onClick={() => removeComment()} /> }
 
             </Container>
             <Box>
