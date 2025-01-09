@@ -42,7 +42,6 @@ const Post = ({ post }) => {
     const addEllipsis = (str, limit) => {
         return str.length > limit ? str.substring(0, limit) + '...' : str;
     } 
-
     return (
         <Container>
             <Image src={url} alt="post" />

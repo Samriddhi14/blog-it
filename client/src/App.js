@@ -9,6 +9,7 @@ import Home from "./home/Home"
 import Header from './components/header/Header';
 import DataProvider from './context/DataProvider';
 import CreatePost from './components/create/CreatePost';
+import DetailView from './components/details/DetailView';
 
 const PrivateRoute = ({ isAuthenticated, ...props }) => {
   const token = sessionStorage.getItem('accessToken');
@@ -26,6 +27,7 @@ function App() {
       <BrowserRouter>
         <div style={{marginTop: 64}}>
           <Routes>
+
             <Route path = '/login' element = {<Login isUserAuthenticated ={isUserAuthenticated} />} />
             <Route path = '/' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
               <Route path = '/' element = {<Home />} />
@@ -34,6 +36,11 @@ function App() {
             <Route path = '/create' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
               <Route path = '/create' element = {<CreatePost />} />
             </Route>
+
+            <Route path = '/details/:id' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
+              <Route path = '/details/:id' element = {<DetailView />} />
+            </Route>
+
           </Routes>
         </div>
       </BrowserRouter>
