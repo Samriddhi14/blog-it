@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import { API_NOTIFICATION_MESSAGES, SERVICE_URLS } from '../constants/config';
 import { getAccessToken, getType } from '../utils/common-utils';
 
@@ -13,12 +12,17 @@ const axiosInstance = axios.create({
     }
 });
 
+// Request Interceptor
 axiosInstance.interceptors.request.use(
     function(config) {
+        config.TYPE = config.TYPE || {}; // Ensure TYPE exists
         if (config.TYPE.params) {
-            config.params = config.TYPE.params
+            config.params = config.TYPE.params;
         } else if (config.TYPE.query) {
-            config.url = config.url + '/' + config.TYPE.query;
+            config.url = `${config.url}/${config.TYPE.query}`;
+        }
+        if (!config.headers.authorization && getAccessToken()) {
+            config.headers.authorization = getAccessToken(); // Inject token
         }
         return config;
     },
@@ -27,90 +31,58 @@ axiosInstance.interceptors.request.use(
     }
 );
 
+// Response Interceptor
 axiosInstance.interceptors.response.use(
     function(response) {
-        // Stop global loader here
         return processResponse(response);
     },
-    function(error) {
-        // Stop global loader here
-        return Promise.reject(ProcessError(error));
+    async function(error) {
+        return Promise.reject(await ProcessError(error));
     }
-)
+);
 
-///////////////////////////////
-// If success -> returns { isSuccess: true, data: object }
-// If fail -> returns { isFailure: true, status: string, msg: string, code: int }
-//////////////////////////////
+// Response Processor
 const processResponse = (response) => {
     if (response?.status === 200) {
-        return { isSuccess: true, data: response.data }
+        return { isSuccess: true, data: response.data };
     } else {
         return {
             isFailure: true,
             status: response?.status,
-            msg: response?.msg,
-            code: response?.code
-        }
+            msg: response?.msg || "Unexpected Error",
+            code: response?.code || ""
+        };
     }
-}
+};
 
-///////////////////////////////
-// If success -> returns { isSuccess: true, data: object }
-// If fail -> returns { isError: true, status: string, msg: string, code: int }
-//////////////////////////////
+// Error Processor
 const ProcessError = async (error) => {
     if (error.response) {
-        // Request made and server responded with a status code 
-        // that falls out of the range of 2xx
         if (error.response?.status === 403) {
-            // const { url, config } = error.response;
-            // console.log(error);
-            // try {
-            //     let response = await API.getRefreshToken({ token: getRefreshToken() });
-            //     if (response.isSuccess) {
-                    sessionStorage.clear();
-            //         setAccessToken(response.data.accessToken);
-
-            //         const requestData = error.toJSON();
-
-            //         let response1 = await axios({
-            //             method: requestData.config.method,
-            //             url: requestData.config.baseURL + requestData.config.url,
-            //             headers: { "content-type": "application/json", "authorization": getAccessToken() },
-            //             params: requestData.config.params
-            //         });
-            //     }
-            // } catch (error) {
-            //     return Promise.reject(error)
-            // }
-        } else {
-            console.log("ERROR IN RESPONSE: ", error.toJSON());
-            return {
-                isError: true,
-                msg: API_NOTIFICATION_MESSAGES.responseFailure,
-                code: error.response.status
-            }
+            console.error("Unauthorized! Clearing session...");
+            sessionStorage.clear();
         }
-    } else if (error.request) { 
-        // The request was made but no response was received
-        console.log("ERROR IN RESPONSE: ", error.toJSON());
+        return {
+            isError: true,
+            msg: API_NOTIFICATION_MESSAGES.responseFailure,
+            code: error.response.status
+        };
+    } else if (error.request) {
         return {
             isError: true,
             msg: API_NOTIFICATION_MESSAGES.requestFailure,
             code: ""
-        }
-    } else { 
-        // Something happened in setting up the request that triggered an Error
-        console.log("ERROR IN RESPONSE: ", error.toJSON());
+        };
+    } else {
         return {
             isError: true,
             msg: API_NOTIFICATION_MESSAGES.networkError,
             code: ""
-        }
+        };
     }
-}
+};
 
+// API Object
 const API = {};
 
 for (const [key, value] of Object.entries(SERVICE_URLS)) {

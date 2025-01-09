@@ -10,10 +10,12 @@ import Header from './components/header/Header';
 import DataProvider from './context/DataProvider';
 import CreatePost from './components/create/CreatePost';
 import DetailView from './components/details/DetailView';
+import Update from './components/create/Update';
+//import { UpdateDisabled } from '@mui/icons-material';
 
 const PrivateRoute = ({ isAuthenticated, ...props }) => {
   const token = sessionStorage.getItem('accessToken');
-  return isAuthenticated ? 
+  return isAuthenticated && token ? 
     <>
       <Header />
       <Outlet />
@@ -25,7 +27,7 @@ function App() {
   return (
     <DataProvider>
       <BrowserRouter>
-        <div style={{marginTop: 64}}>
+        <Box style={{marginTop: 64}}>
           <Routes>
 
             <Route path = '/login' element = {<Login isUserAuthenticated ={isUserAuthenticated} />} />
@@ -41,8 +43,12 @@ function App() {
               <Route path = '/details/:id' element = {<DetailView />} />
             </Route>
 
+            <Route path = '/update/:id' element={<PrivateRoute isAuthenticated={isAuthenticated} />} >
+              <Route path = '/update/:id' element = {<Update />} />
+            </Route>
+
           </Routes>
-        </div>
+        </Box>
       </BrowserRouter>
     </DataProvider>
   );

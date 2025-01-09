@@ -43,13 +43,19 @@ export const deletePost = async (request, response) => {
 
 export const getPost = async (request, response) => {
     try {
+        console.log("ID received:", request.params.id);
         const post = await Post.findById(request.params.id);
+
+        if (!post) {
+            return response.status(404).json({ msg: "Post not found" });
+        }
 
         response.status(200).json(post);
     } catch (error) {
-        response.status(500).json(error)
+        response.status(500).json({ msg: error.message });
     }
-}
+};
+
 
 export const getAllPosts = async (request, response) => {
     //let username = request.query.username;
