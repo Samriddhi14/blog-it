@@ -13,7 +13,7 @@ export const createPost = async (request, response) => {
     }
 }
 
-/*export const updatePost = async (request, response) => {
+export const updatePost = async (request, response) => {
     try {
         const post = await Post.findById(request.params.id);
 
@@ -32,14 +32,18 @@ export const createPost = async (request, response) => {
 export const deletePost = async (request, response) => {
     try {
         const post = await Post.findById(request.params.id);
-        
-        await post.delete()
+        if (!post) {
+            return response.status(404).json({ message: 'Post not found' });
+        }
+        await post.deleteOne();
 
-        response.status(200).json('post deleted successfully');
+        response.status(200).json({ message: 'Post deleted successfully' });
     } catch (error) {
-        response.status(500).json(error)
+        console.error('Error deleting post:', error);
+        response.status(500).json({ message: 'Server error', error });
     }
-}*/
+};
+
 
 export const getPost = async (request, response) => {
     try {

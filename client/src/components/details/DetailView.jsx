@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 
 import { Box, Typography, styled } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 
 import { API } from '../../service/api';
 
@@ -60,6 +60,7 @@ const DetailView = () => {
     
     const [post, setPost] = useState({});
     const { account } = useContext(DataContext);
+    const navigate = useNavigate();
 
     const { id } = useParams();
     
@@ -78,7 +79,12 @@ const DetailView = () => {
         fetchData();
     }, [id]);
 
- 
+    const deleteBlog = async () => {
+        let response = await API.deletePost(post._id);
+        if(response.isSuccess){
+            navigate('/')
+        }
+    }
 
     return (
         <Container>
@@ -88,7 +94,7 @@ const DetailView = () => {
                     account.username === post.username && 
                     <>  
                     <Link to={`/update/${post._id}`}><EditIcon color="primary" /></Link>
-                    <DeleteIcon />
+                    <DeleteIcon onClick={()=>deleteBlog()} color='error'/>
                     </>
                 }
             </Box>
