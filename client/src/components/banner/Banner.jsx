@@ -13,8 +13,9 @@ const Image = styled(Box)`
 
 const Heading = styled(Typography)`
     font-size: 70px;
-    color: #FFFFFF;
-    line-height: 1
+    color: #213555;
+    background: #FFFFFF;
+    line-height: 1;
 `;
 
 const SubHeading = styled(Typography)`
@@ -27,7 +28,7 @@ const Banner = () => {
     return (
         <Image>
             <Heading>BLOG-!T</Heading>
-            <SubHeading>What is on your mind today?</SubHeading>
+            <SubHeading>What's on your mind for today?</SubHeading>
         </Image>
     )
 }
