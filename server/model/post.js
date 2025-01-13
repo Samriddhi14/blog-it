@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const PostSchema = mongoose.Schema({
+    userId: {  
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     title: {
         type: String,
         required: true,
@@ -26,7 +31,6 @@ const PostSchema = mongoose.Schema({
         type: Date
     }
 });
-
 
 const post = mongoose.model('post', PostSchema);
 

@@ -38,14 +38,20 @@ export const Comments = ({post}) => {
     const { account } = useContext(DataContext);
 
     useEffect(() => {
+        console.log('Post ID:', post._id); 
         const getData = async () => {
-            const response = await API.getAllComments(post._id);
-            if (response.isSuccess) {
-                setComments(response.data);
+            try {
+                const response = await API.getAllComments(post._id);
+                if (response.isSuccess) {
+                    setComments(response.data);
+                }
+            } catch (error) {
+                console.error('Error fetching comments:', error);
             }
-        }
+        };
         getData();
     }, [toggle, post]);
+    
 
     const handleChange = (e) => {
         setComment({

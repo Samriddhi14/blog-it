@@ -6,7 +6,8 @@ const CommentSchema = mongoose.Schema({
         required: true,
     },
     postId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post',
         required: true
     },
     date: {
@@ -18,7 +19,6 @@ const CommentSchema = mongoose.Schema({
         required: true
     }
 });
-
 
 const comment = mongoose.model('comment', CommentSchema);
 

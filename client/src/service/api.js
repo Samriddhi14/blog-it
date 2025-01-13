@@ -15,14 +15,14 @@ const axiosInstance = axios.create({
 // Request Interceptor
 axiosInstance.interceptors.request.use(
     function(config) {
-        config.TYPE = config.TYPE || {}; // Ensure TYPE exists
+        config.TYPE = config.TYPE || {}; 
         if (config.TYPE.params) {
             config.params = config.TYPE.params;
         } else if (config.TYPE.query) {
             config.url = `${config.url}/${config.TYPE.query}`;
         }
         if (!config.headers.authorization && getAccessToken()) {
-            config.headers.authorization = getAccessToken(); // Inject token
+            config.headers.authorization = getAccessToken(); 
         }
         return config;
     },
@@ -82,7 +82,6 @@ const ProcessError = async (error) => {
     }
 };
 
-// API Object
 const API = {};
 
 for (const [key, value] of Object.entries(SERVICE_URLS)) {

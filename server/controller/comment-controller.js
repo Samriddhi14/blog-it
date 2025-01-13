@@ -16,13 +16,21 @@ export const newComment = async (request, response) => {
 
 export const getComments = async (request, response) => {
     try {
+        console.log('Post ID:', request.params.id); // Debugging log
+
         const comments = await Comment.find({ postId: request.params.id });
-        
+
+        if (comments.length === 0) {
+            return response.status(404).json({ message: 'No comments found for this post' });
+        }
+
         response.status(200).json(comments);
     } catch (error) {
-        response.status(500).json(error)
+        console.error('Error fetching comments:', error);
+        response.status(500).json({ message: 'Server error', error });
     }
-}
+};
+
 
 export const deleteComment = async (request, response) => {
     try {
