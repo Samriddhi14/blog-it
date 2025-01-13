@@ -68,7 +68,7 @@ const DetailView = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let response = await API.getPostById(id); // Assuming `id` is passed to the API
+                let response = await API.getPostById(id);
                 if (response.isSuccess) {
                     setPost(response.data);
                 }

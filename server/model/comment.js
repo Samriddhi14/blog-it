@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 
 const CommentSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
     postId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post',
         required: true
+    },  
+    name: {
+        type: String,
+        required: true,
     },
     date: {
         type: String,
@@ -19,6 +19,7 @@ const CommentSchema = mongoose.Schema({
         required: true
     }
 });
+
 
 const comment = mongoose.model('comment', CommentSchema);
 

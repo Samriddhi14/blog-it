@@ -3,15 +3,21 @@ import Post from '../model/post.js';
 
 
 export const createPost = async (request, response) => {
+    console.log('Request:', request);
     try {
-        const post = await new Post(request.body);
-        post.save();
+        const post = new Post({
+            ...request.body,
+            userId: request.user.id,
+        });
+        
+        await post.save();
 
         response.status(200).json('Post saved successfully');
     } catch (error) {
         response.status(500).json(error);
     }
 }
+
 
 export const updatePost = async (request, response) => {
     try {

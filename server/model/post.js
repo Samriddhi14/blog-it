@@ -5,7 +5,7 @@ const PostSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    },
+    },  
     title: {
         type: String,
         required: true,
@@ -21,7 +21,8 @@ const PostSchema = mongoose.Schema({
     },
     username: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     categories: {
         type: Array,
@@ -31,6 +32,7 @@ const PostSchema = mongoose.Schema({
         type: Date
     }
 });
+
 
 const post = mongoose.model('post', PostSchema);
 

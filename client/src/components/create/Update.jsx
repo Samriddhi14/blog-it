@@ -45,7 +45,7 @@ const initialPost = {
     title: '',
     description: '',
     picture: '',
-    username: 'codeforinterview',
+    username: 'sam14',
     categories: 'Tech',
     createdDate: new Date()
 }
@@ -83,7 +83,7 @@ const Update = () => {
                     setPost((prevPost) => ({ 
                         ...prevPost, 
                         picture: response.data 
-                    })); // Update post state safely
+                    })); 
                     setImageURL(response.data);
                 }
             }

@@ -82,6 +82,7 @@ const ProcessError = async (error) => {
     }
 };
 
+// API Object
 const API = {};
 
 for (const [key, value] of Object.entries(SERVICE_URLS)) {
