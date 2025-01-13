@@ -70,18 +70,26 @@ export const getPost = async (request, response) => {
 export const getAllPosts = async (request, response) => {
     let username = request.query.username;
     let category = request.query.category;
+    let page = parseInt(request.query.page) || 1; 
+    let limit = parseInt(request.query.limit) || 4; 
     let posts;
+
     try {
-        if(username) 
-            posts = await Post.find({ username: username });
-        else if (category) 
-            posts = await Post.find({ categories: category });
-        else 
-            posts = await Post.find({});
-            
-        response.status(200).json(posts);
+        const filter = {};
+        if (username) filter.username = username;
+        if (category) filter.categories = category;
+
+        const totalPosts = await Post.countDocuments(filter);
+        posts = await Post.find(filter).skip((page - 1) * limit) .limit(limit); 
+
+        response.status(200).json({
+            data: posts,
+            total: totalPosts,
+            page,
+            pages: Math.ceil(totalPosts / limit),
+        });
     } catch (error) {
-        response.status(500).json(error)
+        response.status(500).json(error);
         console.log(error);
     }
-}
+};
