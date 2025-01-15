@@ -52,6 +52,7 @@ export const deletePost = async (request, response) => {
 
 
 export const getPost = async (request, response) => {
+    console.log(request);
     try {
         console.log("ID received:", request.params.id);
         const post = await Post.findById(request.params.id);

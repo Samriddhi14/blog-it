@@ -8,8 +8,8 @@ import Post from './Post';
 
 const Posts = () => {
     const [posts, setPosts] = useState([]);
-    const [page, setPage] = useState(1); // Current page
-    const [totalPages, setTotalPages] = useState(1); // Total number of pages
+    const [page, setPage] = useState(1); 
+    const [totalPages, setTotalPages] = useState(1); 
     const [searchParams] = useSearchParams();
     const category = searchParams.get('category');
 
