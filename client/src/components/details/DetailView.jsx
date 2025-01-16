@@ -68,7 +68,11 @@ const DetailView = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const startTime = Date.now();
                 let response = await API.getPostById(id);
+                const endTime = Date.now();
+                const diff = endTime - startTime;
+                console.log(diff);
                 if (response.isSuccess) {
                     setPost(response.data);
                 }

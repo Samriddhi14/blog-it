@@ -1,5 +1,6 @@
 
 import Post from '../model/post.js';
+import redisClient from '../redis/redisClient.js';
 
 
 export const createPost = async (request, response) => {
@@ -52,17 +53,29 @@ export const deletePost = async (request, response) => {
 
 
 export const getPost = async (request, response) => {
-    console.log(request);
     try {
-        console.log("ID received:", request.params.id);
-        const post = await Post.findById(request.params.id);
+        const postId = request.params.id;
+        console.log("ID received:", postId);
+        
+        const cacheKey = `post:${postId}`;
+        const exists = await redisClient.get(cacheKey);
+
+        if (exists) {
+            console.log('Serving post from Redis cache');
+            return response.status(200).json(JSON.stringify(cachedPost));
+        }
+
+        const post = await Post.findById(postId);
 
         if (!post) {
             return response.status(404).json({ msg: "Post not found" });
         }
+        await redisClient.set(cacheKey, JSON.stringify(post), { EX: 360 });
 
+        console.log('Serving post from MongoDB and caching it');
         response.status(200).json(post);
     } catch (error) {
+        console.error('Error fetching post:', error);
         response.status(500).json({ msg: error.message });
     }
 };
@@ -91,6 +104,5 @@ export const getAllPosts = async (request, response) => {
         });
     } catch (error) {
         response.status(500).json(error);
-        console.log(error);
     }
 };
